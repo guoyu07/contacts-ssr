@@ -300,7 +300,7 @@
         this.currentIndex = index
       },
 
-      // 修改一行数据
+      // 修改联系人
       updatePerson() {
         for (let k = 0; k < this.contacts.length; k++) {
           if (typeof this.contacts[k]['index'] === 'undefined') {
