@@ -105,7 +105,7 @@
             </el-input>
           </el-form-item>
           <el-form-item label="个人主页" prop="site" required>
-            <el-input v-model="form.site" autocomplete="off"  placeholder="选填项">
+            <el-input v-model="form.site" auto-complete="off"  placeholder="选填项">
             </el-input>
           </el-form-item>
           <el-form-item>
@@ -129,7 +129,7 @@
           <el-button type="primary" @click="addPerson" v-if="sure">
             确 定
           </el-button>
-          <el-button type="warning" @click="changePerson" v-else>
+          <el-button type="warning" @click="updatePerson" v-else>
             修 改
           </el-button>
         </span>
@@ -181,12 +181,6 @@
       }
     },
     
-    // computed: {
-    //   ...mapGetters({
-    //     contacts: 'allContacts'
-    //   })
-    // },
-
     created() {
       this.$store.dispatch('GET_PERSON')
       this.$store.dispatch('GET_GROUP')
@@ -307,13 +301,12 @@
       },
 
       // 修改一行数据
-      changePerson() {
+      updatePerson() {
         for (let k = 0; k < this.contacts.length; k++) {
           if (typeof this.contacts[k]['index'] === 'undefined') {
             this.$set(this.contacts[k], 'index', k)
           }
         }
-        let tmpContact = {}
         for (let i = 0; i < this.contacts.length; i++) {
           // 根据主键查找要修改的数据，然后将this.form数据更新到this.contacts[i]
           if (this.contacts[i]['index'] === this.currentIndex) {
@@ -321,19 +314,17 @@
             for (let j in this.form) {
               this.contacts[i][j] = this.form[j]
             }
-            tmpContact = Object.assign({}, this.contacts[i])
             break;
           }
         }
         
-        this.$store.dispatch('UPDATE_PERSON', tmpContact)
+        this.$store.dispatch('UPDATE_PERSON', this.form)
        
         this.dialogVisible = false
         this.form = {}
       },
 
       // 对象深拷贝
-      // 卧槽 卡了我十天半个月 真是深奥
       initItemForUpdate(p, c) {
         c = c || {};
         for (var i in p) {
